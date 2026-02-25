@@ -93,6 +93,19 @@
         <!--    ODOO-445  end  -->
     </template>
 
+    <!-- ODOO-628: Add "Select All" to journals filter -->
+    <template id="search_template_journals_inherit_bio" inherit_id="account_reports.search_template_journals">
+        <xpath expr="//div[hasclass('dropdown-menu','o_filter_menu')]" position="inside">
+            <t t-if="options.get('journals')">
+                <div role="separator" class="dropdown-divider js_journal_select_all_divider"/>
+                <a role="menuitem"
+                   class="dropdown-item js_account_report_journal_select_all"
+                   href="#">Select All</a>
+            </t>
+        </xpath>
+    </template>
+    <!-- ODOO-628 end -->
+
     <template id="search_template_inherit_bio" inherit_id="account_reports.search_template">
         <!--    ODOO-445    -->
         <xpath expr="//div[@id=&quot;extra_options_dropdown&quot;]" position="replace">
