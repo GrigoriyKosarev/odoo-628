@@ -10,21 +10,6 @@ const _t = core._t;
 
 
 accountReportsWidget.include({
-    custom_events: _.extend({}, accountReportsWidget.prototype.custom_events, {
-        bio_factoring_filter_changed: function(event)
-        {
-            const self = this;
-
-            self.report_options.account_ids = event.data.account_ids;
-
-            return self.reload().then(function ()
-            {
-                self.$searchview_buttons.parent().find('.o_account_reports_filter_bio_factoring > button.dropdown-toggle').click();
-            });
-        },
-    }),
-
-
     render_searchview_buttons: function()
     {
         this._super.apply(this, arguments);
@@ -42,44 +27,6 @@ accountReportsWidget.include({
             self.reload();
         });
 
-        // bio_factoring filter
-        if (typeof this.report_options.bio_factoring === 'boolean') {
-            const self = this;
-            const $filterButton = this.$searchview_buttons.find('.js_account_bio_factoring_m2m');
-            $filterButton.on('click', function() {
-                self.report_options.bio_factoring = !self.report_options.bio_factoring;
-                self.reload();
-            });
-
-            // Оновлення тексту кнопки відповідно до стану
-            const buttonText = this.report_options.bio_factoring ? _t("Factoring: On") : _t("Factoring: Off");
-            $filterButton.text(buttonText);
-        }
-//        if (this.report_options.bio_factoring)
-//        {
-//            if (!this.bio_factoring_m2m_filter)
-//            {
-//                const fields = {};
-//                if ('bio_factoring' in this.report_options)
-//                {
-//                    fields['account_ids'] = {
-//                        label: _t("Accounts"),
-//                        modelName: 'account.account',
-//                        value: this.report_options.account_ids.map(Number),
-//                    };
-//                }
-//
-//                if (!_.isEmpty(fields))
-//                {
-//                    this.bio_factoring_m2m_filter = new M2MFilters(this, fields, 'bio_factoring_filter_changed');
-//                    this.bio_factoring_m2m_filter.appendTo(this.$searchview_buttons.find('.js_account_bio_factoring_m2m'));
-//                }
-//            }
-//            else
-//            {
-//                this.$searchview_buttons.find('.js_account_bio_factoring_m2m').append(this.bio_factoring_m2m_filter.$el);
-//            }
-//        }
     },
 
 
