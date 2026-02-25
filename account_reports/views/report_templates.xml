@@ -617,6 +617,11 @@
                 <t t-out="options.get('name_journal_group')"/>
         </button>
         <div class="dropdown-menu o_filter_menu" role="menu">
+            <a role="menuitem"
+               class="dropdown-item js_account_report_journal_select_all"
+               data-filter="journals"
+               href="#">Select All</a>
+            <div role="separator" class="dropdown-divider"/>
             <t t-foreach="options['journals']" t-as="j">
                 <t t-if="j.get('id') == 'divider'">
                     <div role="separator" class="dropdown-divider"/>
