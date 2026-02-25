@@ -29,6 +29,19 @@ accountReportsWidget.include({
     {
         this._super.apply(this, arguments);
 
+        // ODOO-628: "Select All" button for journals filter
+        var self = this;
+        $('.js_account_report_journal_select_all', this.$searchview_buttons).click(function (ev) {
+            ev.preventDefault();
+            _.each(self.report_options.journals, function(journal) {
+                if (journal.model === 'account.journal') {
+                    journal.selected = true;
+                }
+            });
+            delete self.report_options.__journal_group_action;
+            self.reload();
+        });
+
         // bio_factoring filter
         if (typeof this.report_options.bio_factoring === 'boolean') {
             const self = this;

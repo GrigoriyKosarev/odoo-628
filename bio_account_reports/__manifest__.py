@@ -18,11 +18,11 @@ BIO Accounting Reports
         'data/account_report_cash_flow_analytic_data.xml',  # ODOO-631
         'views/account_report_view.xml',
     ],
-    # 'assets': {
-    #     'web.assets_backend': [
-    #         'bio_account_reports/static/src/js/account_reports.js',
-    #     ],
-    # },
+    'assets': {
+        'web.assets_backend': [
+            'bio_account_reports/static/src/js/account_reports.js',
+        ],
+    },
     'auto_install': False,
     'installable': True,
 }
