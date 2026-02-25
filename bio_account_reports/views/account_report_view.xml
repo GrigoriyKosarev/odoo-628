@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="account_report_form_inherit_bio" model="ir.ui.view">
+        <field name="name">account.report.form.inherit.bio</field>
+        <field name="model">account.report</field>
+        <field name="inherit_id" ref="account_reports.account_report_form"/>
+        <field name="priority" eval="100"/>
+        <field name="arch" type="xml">
+            <!--   ODOO-445    -->
+            <xpath expr="//notebook/page[3]/group" position="attributes">
+                <attribute name="col">6</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[3]/group/group[1]" position="attributes">
+                <attribute name="colspan">3</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[3]/group/group[2]" position="attributes">
+                <attribute name="colspan">3</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[3]/group/group[3]" position="attributes">
+                <attribute name="colspan">2</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[3]/group/group[4]" position="attributes">
+                <attribute name="colspan">2</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[3]/group" position="inside">
+                <group string="Currency Filters" colspan="2" class="oe_edit_only">
+                    <field name="filter_currency_eur"/>
+                    <field name="filter_currency_huf"/>
+                    <field name="filter_currency_ron"/>
+                    <field name="filter_currency_pln"/>
+                    <field name="filter_currency_czk"/>
+                    <field name="filter_currency_gbp"/>
+                    <field name="filter_currency_uah"/>
+                    <field name="filter_currency_usd"/>
+                </group>
+            </xpath>
+            <!--    ODOO-445  end -->
+        </field>
+    </record>
+
+    <template id="filter_info_template_inherit_bio" inherit_id="account_reports.filter_extra_options_template">
+        <!--    ODOO-445    -->
+        <xpath expr="//t[@t-if=&quot;report.filter_unreconciled&quot;]" position="before">
+            <t t-if="report.filter_currency_eur">
+                <t t-if="report.filter_show_draft and options['currency_EUR']">, </t>
+                <t t-if="options['currency_EUR']">Only Show Currency is EUR</t>
+            </t>
+            <t t-if="report.filter_currency_huf">
+                <t t-if="report.filter_show_draft and options['currency_HUF']">, </t>
+                <t t-if="options['currency_HUF']">Only Show Currency is HUF</t>
+            </t>
+            <t t-if="report.filter_currency_ron">
+                <t t-if="report.filter_show_draft and options['currency_RON']">, </t>
+                <t t-if="options['currency_RON']">Only Show Currency is RON</t>
+            </t>
+            <t t-if="report.filter_currency_pln">
+                <t t-if="report.filter_show_draft and options['currency_PLN']">, </t>
+                <t t-if="options['currency_PLN']">Only Show Currency is PLN</t>
+            </t>
+            <t t-if="report.filter_currency_czk">
+                <t t-if="report.filter_show_draft and options['currency_CZK']">, </t>
+                <t t-if="options['currency_CZK']">Only Show Currency is CZK</t>
+            </t>
+            <t t-if="report.filter_currency_gbp">
+                <t t-if="report.filter_show_draft and options['currency_GBP']">, </t>
+                <t t-if="options['currency_GBP']">Only Show Currency is GBP</t>
+            </t>
+            <t t-if="report.filter_currency_uah">
+                <t t-if="report.filter_show_draft and options['currency_UAH']">, </t>
+                <t t-if="options['currency_UAH']">Only Show Currency is UAH</t>
+            </t>
+            <t t-if="report.filter_currency_usd">
+                <t t-if="report.filter_show_draft and options['currency_USD']">, </t>
+                <t t-if="options['currency_USD']">Only Show Currency is USD</t>
+            </t>
+        </xpath>
+        <!--    ODOO-445  end  -->
+    </template>
+
+    <template id="search_template_extra_options_inherit_bio" inherit_id="account_reports.search_template_extra_options">
+        <!--    ODOO-445    -->
+        <xpath expr="//div" position="inside">
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_currency_eur" title="Currency_EUR" data-filter="currency_EUR">Only Show Currency is EUR</a>
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_currency_huf" title="Currency_HUF" data-filter="currency_HUF">Only Show Currency is HUF</a>
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_currency_ron" title="Currency_RON" data-filter="currency_RON">Only Show Currency is RON</a>
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_currency_pln" title="Currency_PLN" data-filter="currency_PLN">Only Show Currency is PLN</a>
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_currency_czk" title="Currency_CZK" data-filter="currency_CZK">Only Show Currency is CZK</a>
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_currency_gbp" title="Currency_GBP" data-filter="currency_GBP">Only Show Currency is GBP</a>
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_currency_uah" title="Currency_UAH" data-filter="currency_UAH">Only Show Currency is UAH</a>
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_currency_usd" title="Currency_USD" data-filter="currency_USD">Only Show Currency is USD</a>
+        </xpath>
+        <!--    ODOO-445  end  -->
+    </template>
+
+    <template id="search_template_inherit_bio" inherit_id="account_reports.search_template">
+        <!--    ODOO-445    -->
+        <xpath expr="//div[@id=&quot;extra_options_dropdown&quot;]" position="replace">
+            <div id="extra_options_dropdown" class="btn-group dropdown o_account_reports_filter_bool"
+                 t-if="options.get('report_cash_basis') != None or report.filter_show_draft or report.filter_unfold_all or report.filter_unreconciled or report.filter_currency_eur
+                                                                                                                                                      or report.filter_currency_huf
+                                                                                                                                                      or report.filter_currency_ron
+                                                                                                                                                      or report.filter_currency_pln
+                                                                                                                                                      or report.filter_currency_czk
+                                                                                                                                                      or report.filter_currency_gbp
+                                                                                                                                                      or report.filter_currency_uah
+                                                                                                                                                      or report.filter_currency_usd">
+                <t t-call="account_reports.search_template_extra_options"/>
+            </div>
+        </xpath>
+        <!--    ODOO-445  end  -->
+    </template>
+
+</odoo>

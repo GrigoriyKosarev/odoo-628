@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <!-- ODOO-631 -->
+        <record id="account_report_cash_flow_analytic_line_cash_outflow_expression_budget" model="account.report.expression">
+            <field name="report_line_id" ref="selferp_cashflow_analytic.account_report_cash_flow_analytic_line_cash_outflow"/>
+            <field name="label">budget</field>
+            <field name="engine">custom</field>
+            <field name="formula">_report_custom_engine_cash_flow_analytic_cash_outflow</field>
+            <field name="subformula">budget</field>
+            <field name="figure_type">monetary</field>
+        </record>
+        <record id="account_report_cash_flow_analytic_line_cash_outflow_expression_remaining_balance" model="account.report.expression">
+            <field name="report_line_id" ref="selferp_cashflow_analytic.account_report_cash_flow_analytic_line_cash_outflow"/>
+            <field name="label">remaining_balance</field>
+            <field name="engine">custom</field>
+            <field name="formula">_report_custom_engine_cash_flow_analytic_cash_outflow</field>
+            <field name="subformula">remaining_balance</field>
+            <field name="figure_type">monetary</field>
+        </record>
+        <record id="account_report_cash_flow_analytic_line_cash_outflow_expression_achievement" model="account.report.expression">
+            <field name="report_line_id" ref="selferp_cashflow_analytic.account_report_cash_flow_analytic_line_cash_outflow"/>
+            <field name="label">achievement</field>
+            <field name="engine">custom</field>
+            <field name="formula">_report_custom_engine_cash_flow_analytic_cash_outflow</field>
+            <field name="subformula">achievement</field>
+            <field name="figure_type">percentage</field>
+        </record>
+        <!--
+        <record id="selferp_cashflow_analytic.account_report_cash_flow_analytic_line_cash_outflow" model="account.report.line">
+            <field name="expression_ids" eval="[(4, ref('account_report_cash_flow_analytic_line_cash_outflow_expression_budget'))]"/>
+            <field name="expression_ids" eval="[(4, ref('account_report_cash_flow_analytic_line_cash_outflow_expression_remaining_balance'))]"/>
+            <field name="expression_ids" eval="[(4, ref('account_report_cash_flow_analytic_line_cash_outflow_expression_achievement'))]"/>
+        </record>
+        -->
+
+        <record id="account_report_cash_flow_analytic_column_budget" model="account.report.column">
+            <field name="name">Budget</field>
+            <field name="expression_label">budget</field>
+            <field name="figure_type">monetary</field>
+            <field name="sortable" eval="False"/>
+            <field name="blank_if_zero" eval="True"/>
+        </record>
+        <record id="account_report_cash_flow_analytic_column_remaining_balance" model="account.report.column">
+            <field name="name">Remaining balance</field>
+            <field name="expression_label">remaining_balance</field>
+            <field name="figure_type">monetary</field>
+            <field name="sortable" eval="False"/>
+            <field name="blank_if_zero" eval="True"/>
+        </record>
+        <record id="account_report_cash_flow_analytic_column_achievement" model="account.report.column">
+            <field name="name">Achievement</field>
+            <field name="expression_label">achievement</field>
+            <field name="figure_type">percentage</field>
+            <field name="sortable" eval="False"/>
+            <field name="blank_if_zero" eval="True"/>
+        </record>
+
+        <record id="selferp_cashflow_analytic.account_report_cash_flow_analytic" model="account.report">
+            <field name="column_ids" eval="[(4, ref('account_report_cash_flow_analytic_column_budget'))]"/>
+            <field name="column_ids" eval="[(4, ref('account_report_cash_flow_analytic_column_remaining_balance'))]"/>
+            <field name="column_ids" eval="[(4, ref('account_report_cash_flow_analytic_column_achievement'))]"/>
+        </record>
+        <!-- ODOO-631 end -->
+    </data>
+</odoo>

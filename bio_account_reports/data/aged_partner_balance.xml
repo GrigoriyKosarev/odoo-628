@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="aged_receivable_report_bio_factoring" model="account.report.column">
+            <field name="name">Factoring</field>
+            <field name="expression_label">bio_factoring</field>
+            <field name="figure_type">none</field>
+            <field name="sortable" eval="True"/>
+        </record>
+
+        <template id="bio_factoring_search_template_extra_menu">
+            <xpath expr="//div[contains(@class, 'o_account_reports_toolbar')]" position="inside">
+                <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                    <span class="fa fa-user"/>
+                    Factoring:
+                    <t t-set="names_selected" t-value="[options['bio_factoring'][n]['name'] for n in range(len(options['bio_factoring'])) if options['bio_factoring'][n]['selected']]"/>
+                    <t t-set="num_selected" t-value="len(names_selected)"/>
+                    <t t-out="options['bio_factoring_display_name']"/>
+                </button>
+                <div class="dropdown-menu o_filter_menu" role="menu">
+                    <t t-if="options.get('bio_factoring') is not None">
+                        <t t-foreach="options['bio_factoring']" t-as="bio_factoring">
+                            <a t-att-title="bio_factoring['name']"
+                                t-att-data-id="bio_factoring['id']"
+                                data-filter="bio_factoring"
+                                class="dropdown-item js_account_report_choice_filter"
+                                role="menuitem"
+                                t-out="bio_factoring['name']"/>
+                        </t>
+                    </t>
+                    <t t-if="options.get('filter_bio_factoring')">
+                        <div role="separator" class="dropdown-divider"/>
+                        <div role="menuitem" class="o_account_report_search js_account_bio_factoring_m2m"/>
+                    </t>
+                </div>
+            </xpath>
+        </template>
+
+
+        <template id="bio_factoring_search_template" inherit_id="account_reports.search_template" primary="True">
+<!--            <xpath expr="//div[@id='extra_options_dropdown']/t" position="after">-->
+<!--                <t t-call="bio_account_reports.bio_factoring_search_template_extra_menu"/>-->
+<!--            </xpath>-->
+            <xpath expr="//div[@id='extra_options_dropdown']/t" position="after">
+                <div t-if="options.get('bio_factoring') is not None" class="btn-group dropdown o_account_reports_filter_bio_factoring">
+                    <t t-call="bio_account_reports.bio_factoring_search_template_extra_menu"/>
+                </div>
+            </xpath>
+
+        </template>
+
+        <record id="account_reports.aged_receivable_report" model="account.report">
+            <field name="filter_bio_factoring" eval="True"/>
+            <field name="search_template">bio_account_reports.bio_factoring_search_template</field>
+            <field name="column_ids" eval="[(4, ref('aged_receivable_report_bio_factoring'))]"/>
+        </record>
+
+        <record id="view_account_report_form" model="ir.ui.view">
+            <field name="name">account.report.form.inherit.bio_factoring</field>
+            <field name="model">account.report</field>
+            <field name="inherit_id" ref="account_reports.account_report_form"/>
+            <field name="arch" type="xml">
+                <field name="filter_account_type" position="after">
+                    <field name="filter_bio_factoring"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+
