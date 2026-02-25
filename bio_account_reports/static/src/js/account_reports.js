@@ -18,15 +18,34 @@ accountReportsWidget.include({
         var self = this;
         $('.js_account_report_journal_select_all', this.$searchview_buttons).click(function (ev) {
             ev.preventDefault();
-            _.each(self.report_options.journals, function(journal) {
-                if (journal.model === 'account.journal') {
-                    journal.selected = true;
+            var journals = self.report_options.journals || [];
+            for (var i = 0; i < journals.length; i++) {
+                if (journals[i].model === 'account.journal') {
+                    journals[i].selected = true;
                 }
-            });
+            }
             delete self.report_options.__journal_group_action;
             self._bio_select_all_journals = true;
             self.reload();
         });
+
+        // ODOO-628: After reload from "Select All", the server normalizes
+        // all-selected to "All Journals" and resets selected=false.
+        // Restore visual checkmarks and client-side selected state.
+        if (this._bio_select_all_journals) {
+            var journals = this.report_options.journals || [];
+            for (var i = 0; i < journals.length; i++) {
+                if (journals[i].model === 'account.journal') {
+                    journals[i].selected = true;
+                }
+            }
+            this.$searchview_buttons.find('.js_account_report_journal_choice_filter').each(function() {
+                if ($(this).data('model') === 'account.journal') {
+                    this.classList.add('selected');
+                }
+            });
+            this._bio_select_all_journals = false;
+        }
 
     },
 
