@@ -39,8 +39,26 @@ accountReportsWidget.include({
                 }
             });
             delete self.report_options.__journal_group_action;
+            self._bio_select_all_journals = true;
             self.reload();
         });
+
+        // ODOO-628: After reload from "Select All", the server normalizes
+        // all-selected to "All Journals" and resets selected=false.
+        // Restore visual checkmarks and client-side selected state.
+        if (this._bio_select_all_journals) {
+            this.$searchview_buttons.find('.js_account_report_journal_choice_filter').each(function() {
+                if ($(this).data('model') === 'account.journal') {
+                    $(this).addClass('selected');
+                }
+            });
+            _.each(this.report_options.journals, function(journal) {
+                if (journal.model === 'account.journal') {
+                    journal.selected = true;
+                }
+            });
+            this._bio_select_all_journals = false;
+        }
 
         // bio_factoring filter
         if (typeof this.report_options.bio_factoring === 'boolean') {
