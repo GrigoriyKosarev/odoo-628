@@ -612,17 +612,6 @@ var accountReportsWidget = AbstractAction.extend({
             }
             self.reload();
         });
-        // "Select All" button for journals filter
-        $('.js_account_report_journal_select_all', this.$searchview_buttons).click(function (ev) {
-            ev.preventDefault();
-            _.each(self.report_options.journals, function(journal) {
-                if (journal.model === 'account.journal') {
-                    journal.selected = true;
-                }
-            });
-            delete self.report_options.__journal_group_action;
-            self.reload();
-        });
         _.each(this.$searchview_buttons.find('.js_account_reports_one_choice_filter'), function(k) {
             let menu_data = $(k).data('id');
             let option_data = self.report_options[$(k).data('filter')];
