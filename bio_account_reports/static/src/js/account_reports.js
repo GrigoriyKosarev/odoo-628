@@ -24,6 +24,7 @@ accountReportsWidget.include({
                 }
             });
             delete self.report_options.__journal_group_action;
+            self._bio_select_all_journals = true;
             self.reload();
         });
 
