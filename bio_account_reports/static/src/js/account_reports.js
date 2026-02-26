@@ -10,6 +10,38 @@ const _t = core._t;
 
 
 accountReportsWidget.include({
+
+    // ODOO-628: Detect "All Journals" state — when no journal has selected=true,
+    // the server treats it as all journals included. Show checkmarks accordingly.
+    _bio_isAllJournalsState: function() {
+        var journals = this.report_options.journals || [];
+        var hasAnyJournal = false;
+        for (var i = 0; i < journals.length; i++) {
+            if (journals[i].model === 'account.journal') {
+                hasAnyJournal = true;
+                if (journals[i].selected) {
+                    return false;
+                }
+            }
+        }
+        return hasAnyJournal;
+    },
+
+    // ODOO-628: Mark all journal checkboxes as selected (data + DOM).
+    _bio_checkAllJournals: function() {
+        var journals = this.report_options.journals || [];
+        for (var i = 0; i < journals.length; i++) {
+            if (journals[i].model === 'account.journal') {
+                journals[i].selected = true;
+            }
+        }
+        this.$searchview_buttons.find('.js_account_report_journal_choice_filter').each(function() {
+            if ($(this).data('model') === 'account.journal') {
+                this.classList.add('selected');
+            }
+        });
+    },
+
     render_searchview_buttons: function()
     {
         this._super.apply(this, arguments);
@@ -25,26 +57,14 @@ accountReportsWidget.include({
                 }
             }
             delete self.report_options.__journal_group_action;
-            self._bio_select_all_journals = true;
             self.reload();
         });
 
-        // ODOO-628: After reload from "Select All", the server normalizes
-        // all-selected to "All Journals" and resets selected=false.
-        // Restore visual checkmarks and client-side selected state.
-        if (this._bio_select_all_journals) {
-            var journals = this.report_options.journals || [];
-            for (var i = 0; i < journals.length; i++) {
-                if (journals[i].model === 'account.journal') {
-                    journals[i].selected = true;
-                }
-            }
-            this.$searchview_buttons.find('.js_account_report_journal_choice_filter').each(function() {
-                if ($(this).data('model') === 'account.journal') {
-                    this.classList.add('selected');
-                }
-            });
-            this._bio_select_all_journals = false;
+        // ODOO-628: When in "All Journals" state (server resets selected=false
+        // for all journals), restore visual checkmarks so the UI is consistent —
+        // "All Journals" means all are included, so all should appear checked.
+        if (this._bio_isAllJournalsState()) {
+            this._bio_checkAllJournals();
         }
 
     },
